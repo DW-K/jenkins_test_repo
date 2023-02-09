@@ -12,11 +12,14 @@ pipeline {
             }
          }
       }
-      stage("build") {
+      stage("Checkout") {
          steps {
-            script {
-               gv.buildApp()
-            }
+            checkout scm
+         }
+      }
+      stage("Build") {
+         steps {
+            sh 'docker-compose build web'
          }
       }
       stage("test") {
@@ -33,9 +36,7 @@ pipeline {
       }
       stage("deploy") {
          steps {
-            script {
-               gv.deployApp()
-            }
+            sh "docker-compose up -d"
          }
       }
    }
